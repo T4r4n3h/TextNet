@@ -14,9 +14,11 @@ app.use(express.json());
 //API ROUTES:
 
 // app.use('/api/v1/snippets', require('./routes/api/snippets.js'))
-//SNIPPETS
+
+
+// SNIPPETS
 // get all the snippets:
-app.get('/api/v1/snippets', async (req, res) => {
+app.get('/api/snippets', async (req, res) => {
     try {
         const allSnippets = await db.query ('SELECT * FROM snippets')
         console.log('this is RESULT', allSnippets);
@@ -29,7 +31,7 @@ app.get('/api/v1/snippets', async (req, res) => {
 //CREATE
 //
 //add One to the list
-app.post('/api/v1/snippets', async (req,res) => {
+app.post('/api/snippets', async (req,res) => {
     console.log('a post request just came through! ******');
     console.log(req.body)
     try{
@@ -46,7 +48,7 @@ app.post('/api/v1/snippets', async (req,res) => {
     }
 });
 // GET One snippet ( Detail page)
-app.get('/api/v1/snippets/:id', async (req,res) => {
+app.get('/api/snippets/:id', async (req,res) => {
     console.log(`this is the id of the specific snippet you chose: ${req.params.id}`);
     try {
         const result = await db.query('SELECT * FROM snippets WHERE id = $1',[req.params.id]);
@@ -58,26 +60,45 @@ app.get('/api/v1/snippets/:id', async (req,res) => {
         })
         
     } catch (error) {
-     console.log (error.message)   
+        console.log (error.message)   
     }
 });
 //DELETE a Snippet ( for a button that we are going to implement later on the front)
-app.delete ('api/v1/snippets/:id', async(req, res) =>{
+app.delete('/api/snippets/:id', async(req,res) =>{
+    console.log( 'are you sure?')
     console.log(`this is the id of the snippet you are looking to delete ${req.params.id}`);
     
     try {
         const results = await db.query('DELETE FROM snippets WHERE id = $1',[req.params.id]);
-        res.status(204).json({
-            status: 'success',
-            });
+        res.status(204);
+        
     } catch (error) {
         console.log(error.message)
     }
 });
 
 
-app.post('api/v1/words', async(req, res) =>{
+app.post('/api/words', async(req, res) =>{
+    console.log('posting words now!')
+res.send('THANK YOU FOR SHOWINGUP')
 
+    console.log('this is req.body', req.body)
+    try {
+        const wordResults = await db.query(
+            'INSERT INTO words(id, word, lables_id) values ($1, $2, $3) RETURNING *', [req.body.id, req.body.word, req.body.lables_id]);
+           
+            console.log('this is worldResults', wordResults)
+            res.status(200).json({
+                status: 'success',
+                data:{
+                   wordResults
+                }
+            })
+
+    } catch (err) {
+        
+        console.log (err.message)
+        }
 });
 
 

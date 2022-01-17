@@ -4,14 +4,22 @@ function ClientInputArea() {
     const [title, setTitle] = useState("")
     const [body,setBody] = useState("")
     const [outWords, setOutWords] = useState([body.split(' ')])
+    const [lables, setLables] = useState([
+        
+        {id:1, title:'noun', color:'blue', category:'Figure of speech'},
+        {id:2, title:'number', color:'green', category:'date'},
+        {id:3, title:'verb', color:'yellow', category:'Figure of speech'},
+        {id:4, title:'adjective', color:'grey', category:'Figure of speech'}
+        
+    ])
 
     // const words = body.split(" ");
 
     const onSubmitForm =  async (e) => {
         e.preventDefault();
 
-        alert('the form was just submitter')
-        console.log('this is outWords:',outWords)
+        // alert('the form was just submitter')
+        // console.log('this is outWords:',outWords)
         //need to fetch a POST request to go to db
         try {
             console.log('got here!')
@@ -43,7 +51,31 @@ function ClientInputArea() {
           setBody(e.target.value)
           setOutWords(body.split(' '))
     }
+    const submitWords = async (e) => {
+        e.preventDefault();
+        // alert('this works.')
+        try {
+            
+          const data = {outWords,};
+          console.log(`i want to see what is in the data ${data}`)
+          const response = await fetch (
+              'http://localhost:3007/api/words',
+                {
+                  method: 'POST',
+                  headers: {'content-Type': 'application/json'},
+                  body:JSON.stringify(data)
+                }        
+            );
+            let Response = response.json();
+            console.log("DATA",data);
+            console.log("RESPONSE",Response)
+            console.log("WORD",outWords);
 
+        } catch (error) {
+            console.log(error.message)
+        }
+
+    };
 
 
     return (
@@ -89,9 +121,10 @@ function ClientInputArea() {
 
 
                  <p>this will be the out put</p><br />
-             <div className="mx-auto flex flex-wrap bg-purple-500">
-                {outWords.map (word =>(<Word word={word} key={word.id}/>))}
+             <div className="mx-auto flex flex-wrap ">
+                {outWords.map (word =>(<Word word={word} key={word.id} />))}
                  <button
+                 onClick = {submitWords}
                  className="ml-auto "
                  >Submit</button>
              </div>   

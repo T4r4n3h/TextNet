@@ -3,21 +3,25 @@ import React, {useEffect, useState} from 'react';
 
 function ListSnippets() {
 
-    const [snippets, setSnippets] = useState ([
-        // {
-        //     "id": "1",
-        //     "title": "Tulips",
-        //     "body": "these Tulips are Beutiful. There are four Tulips in the vase."
-        // },
-        // { "id": "2",
-        // "title": "London ",
-        // "body": "London is an old city and I love to move there one day"},
-        // {}
+    const [snippets, setSnippets] = useState ([ ]);
 
-    ]);
+    const deleteSnip = async(id)=>{
+        try {
+            await fetch (
+                `http://localhost:3007/api/snippets/${id}`,{
+                    method: 'DELETE',
+                }
+            );
+            setSnippets(snippets.filter(snip => snip.id !==id));
+        } catch (error) {
+            
+        }
+    }
+
+
     const getSnippets = async() => {
         try {
-            const response = await fetch('http://localhost:3007/api/v1/snippets',)
+            const response = await fetch('http://localhost:3007/api/snippets',)
             console.log('Response:',response)
             const jsonData = await response.json();
             setSnippets(jsonData);
@@ -33,10 +37,10 @@ function ListSnippets() {
 
 
     return (
-        <div>
+        <div className="container text-center justify-content">
             <h1>List of the Snippets</h1> 
-            <table>
-                <thead>
+            <table className="container">
+                <thead className=" border-bottom">
                     <tr>
                         <th>Tile</th>
                         <th>Description</th>
@@ -54,7 +58,10 @@ function ListSnippets() {
                             <button>Annotate</button>
                             </td>
                             <td>
-                                <button>X</button>
+                                <button
+                                onClick={()=>deleteSnip(snip.id)}
+                                className="rounded-full  w-6  align-center bg-red-400 text-white mb-4"
+                                >X</button>
                             </td>
                             <td>maybe list of words</td>
                         </tr>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-function Word({word}) {
+function Word({word}, props) {
     const [lables, setLables] = useState([
         
         {id:1, title:'noun', color:'blue', category:'Figure of speech'},
@@ -9,14 +9,22 @@ function Word({word}) {
         {id:4, title:'adjective', color:'grey', category:'Figure of speech'}
         
     ])
+    const submitWords = async (e) => {
+        e.preventDefault();
+        alert('this works.')
+
+    };
 
 
 
     return (
 
         <div className=" flex flex-wrap ">
-           <form action="">
+           <form 
+           onSubmit = {props.handleClick}
+           action="">
                 <input 
+                name ={word}
                 type="text" 
                 value={word}
                 />
@@ -26,7 +34,7 @@ function Word({word}) {
                 >
                 <option disable></option>     
                 {lables.map(lable =>(
-                    <option value={lable.id}>{lable.title}</option>        
+                    <option value={lable.id} name={lable.id}>{lable.title}</option>        
                 ))}   
                       
 

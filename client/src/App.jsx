@@ -1,6 +1,6 @@
 import React from 'react'
 //components
-// import ClientInputArea from './components/ClientInputArea'
+import ClientInputArea from './components/ClientInputArea'
 import ListSnippets from './components/ListSnippets';
 
 
@@ -11,7 +11,7 @@ const App = () => <div className="container mx-auto border">
         </h1>
 
 
-        {/* <ClientInputArea/> */}
+        <ClientInputArea/>
         <ListSnippets />
 </div>
  
