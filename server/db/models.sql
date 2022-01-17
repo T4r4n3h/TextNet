@@ -6,7 +6,8 @@ CREATE TABLE snippets  (
 
 CREATE TABLE words (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    title VARCHAR(50) NOT NULL
+    lables_id BIGINT NOT NULL REFERENCES lables(id),
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE lables (
