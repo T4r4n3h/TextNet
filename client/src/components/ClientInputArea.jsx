@@ -2,17 +2,39 @@ import React,{useState}  from 'react'
 import Word from './Word'
 function ClientInputArea() {
     const [title, setTitle] = useState("")
-    const [body, setBody] = useState("")
+    const [body,setBody] = useState("")
     const [outWords, setOutWords] = useState([body.split(' ')])
 
     // const words = body.split(" ");
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm =  async (e) => {
         e.preventDefault();
 
         alert('the form was just submitter')
         console.log('this is outWords:',outWords)
         //need to fetch a POST request to go to db
+        try {
+            console.log('got here!')
+          const data = { title, body};
+          console.log(`i want to see what is in the data ${data}`)
+          const response = await fetch (
+              'http://localhost:3007/api/v1/snippets',
+                {
+                  method: 'POST',
+                  headers: {'content-Type': 'application/json'},
+                  body:JSON.stringify(data)
+                }        
+            );
+            let Response = response.json();
+            console.log("DATA",data);
+            console.log("RESPONSE",Response)
+            console.log("TITLE",title);
+
+        } catch (error) {
+            console.log(error.message)
+        }
+
+
 
        
     }
@@ -25,9 +47,9 @@ function ClientInputArea() {
 
 
     return (
-        <div className="mx-auto mt-10 border  w-90">
+        <div className="mx-auto mt-10 border ">
             
-            <div className="mx-auto border shadow-2xl w-50">
+            <div className="mx-auto border shadow-2xl w-25">
             
                 <form
                 action=""
